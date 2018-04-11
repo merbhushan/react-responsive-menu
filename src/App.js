@@ -1,71 +1,79 @@
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import {Nav, NavItem} from 'react-bootstrap';
+var objMenuEle ={
+  leftBar:[
+    {
+      title: "Home",
+      link: "/home",
+      linkType: 1
+    },
+    {
+      title: "Contact",
+      link: "/contact",
+      linkType: 2
+    },
+    {
+      title: "About",
+      link: "/about",
+      linkType: 1
+    }
+  ]
+};
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-)
+class LeftSideMenuBar extends Component {
+  constructor(props){
+    super(props);
 
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-)
+    this.state = {
+      activeKey: 1,
+    };
+    
+    this.handleSelect = this.handleSelect.bind(this)
+  }
+  
+  handleSelect(selectedKey){
+    this.setState({
+      activeKey: 2,
+    });
+    alert(`selected ${selectedKey}`);
+  }
 
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
+  render(){
+    return(
+      <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 left-menu-bar">
+        <Nav bsStyle="pills" stacked activeKey={this.state.activeKey} onSelect={this.handleSelect}>
+          <NavItem eventKey={1} href="/home">
+            NavItem 1 content
+          </NavItem>
+          <NavItem eventKey={2} title="Item">
+            NavItem 2 content
+          </NavItem>
+          <NavItem eventKey={3} disabled>
+            NavItem 3 content
+          </NavItem>
+        </Nav>
+      </div>
+    );
+  }
+}
 
-const Topics = ({ match }) => (
-  <div>
-    <h2>Topics</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/rendering`}>
-          Rendering with React
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/components`}>
-          Components
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/props-v-state`}>
-          Props v. State
-        </Link>
-      </li>
-    </ul>
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <p className="App-intro">
+          To get started, edit <code>src/App.js</code> and save to reload.
+        </p>
+      </div>
+    );
+  }
+}
 
-    <Route path={`${match.path}/:topicId`} component={Topic}/>
-    <Route exact path={match.path} render={() => (
-      <h3>Please select a topic.</h3>
-    )}/>
-  </div>
-)
+export default LeftSideMenuBar;
 
-const BasicExample = () => (
-  <Router>
-    <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/topics">Topics</Link></li>
-      </ul>
-
-      <hr/>
-
-      <Route exact path="/" component={Home}/>
-      <Route path="/about" component={About}/>
-      <Route path="/topics" component={Topics}/>
-    </div>
-  </Router>
-)
-export default BasicExample
