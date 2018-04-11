@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Nav, NavItem} from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 var objMenuEle ={
   leftBar:[
     {
@@ -27,37 +29,51 @@ class LeftSideMenuBar extends Component {
     super(props);
 
     this.state = {
-      activeKey: 1,
+      activeKey: 3,
     };
-    
+
     this.handleSelect = this.handleSelect.bind(this)
   }
   
   handleSelect(selectedKey){
     this.setState({
-      activeKey: 2,
+      activeKey: parseInt(`${selectedKey}`),
     });
-    alert(`selected ${selectedKey}`);
+    console.log(selectedKey);
+    
   }
 
   render(){
     return(
+      <div class="row page-body">
       <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2 left-menu-bar">
         <Nav bsStyle="pills" stacked activeKey={this.state.activeKey} onSelect={this.handleSelect}>
           <NavItem eventKey={1} href="/home">
             NavItem 1 content
           </NavItem>
-          <NavItem eventKey={2} title="Item">
+          <NavItem eventKey={2} href="#">
             NavItem 2 content
           </NavItem>
-          <NavItem eventKey={3} disabled>
+          <NavItem eventKey={3} href="/">
             NavItem 3 content
           </NavItem>
         </Nav>
+        </div>  
+      <Router>
+      <div class="col-xs-12 col-sm-3 col-md-10 col-lg-10 left-menu-bar">
+        <Route exact path="/" component={Home} />
+        </div>
+      </Router>
+      
       </div>
     );
   }
 }
+const Home = () => (
+  <div>
+    <h2>Home</h2>
+  </div>
+);
 
 class App extends Component {
   render() {
